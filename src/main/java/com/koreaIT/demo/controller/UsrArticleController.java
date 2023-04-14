@@ -22,6 +22,7 @@ public class UsrArticleController {
 		makeTestDate();
 	}
 	
+//	서비스 메서드
 	private void makeTestDate() {
 		for(int i = 1; i <= 10; i++) {
 			
@@ -32,6 +33,23 @@ public class UsrArticleController {
 			
 		}
 		
+	}
+	private Article getArticleById(int id) {
+		
+		for(Article article : articles) {
+			if(article.getId() == id) {
+				return article;
+			}
+		}
+		return null;
+	}
+	
+	private Article deleteArticle(int id) {
+		Article article = getArticleById(id);
+		
+		articles.remove(article);
+		
+		return article;
 	}
 
 	private Article writeArticle(String title,String body) {
@@ -56,9 +74,27 @@ public class UsrArticleController {
 	@ResponseBody
 	public List<Article> getArticles() {
 		
-		
 		return this.articles;
 	}
+	
+	@RequestMapping("/usr/article/dodelete")
+	@ResponseBody
+	public String doDelete(int id) {
+		
+		Article article = getArticleById(id);
+		
+		
+		if(article == null) {
+			return id + "번 게시물은 존재하지 않습니다.";
+		}
+		
+		deleteArticle(id);
+		
+		return id +"번 게시물을 삭제했습니다.";
+	}
+
+	
+
 	
 }
 
