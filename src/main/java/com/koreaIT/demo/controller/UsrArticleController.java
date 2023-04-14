@@ -18,11 +18,23 @@ public class UsrArticleController {
 	public UsrArticleController() {
 		this.lastArticleId = 0;
 		this.articles = new ArrayList<>();
+		
+		makeTestDate();
 	}
 	
-	@RequestMapping("/usr/article/doadd")
-	@ResponseBody
-	public Article doAdd(String title,String body) {
+	private void makeTestDate() {
+		for(int i = 1; i <= 10; i++) {
+			
+			String title = "제목" + i;
+			String body = "내용" + i;		
+			
+			writeArticle(title,body);
+			
+		}
+		
+	}
+
+	private Article writeArticle(String title,String body) {
 		
 		int id = this.lastArticleId +1;
 		this.lastArticleId = id;
@@ -31,6 +43,13 @@ public class UsrArticleController {
 		articles.add(article);
 		
 		return article;
+	}
+	
+	@RequestMapping("/usr/article/doadd")
+	@ResponseBody
+	public Article doAdd(String title,String body) {
+		
+		return writeArticle(title,body);
 	}
 	
 	@RequestMapping("/usr/article/getArticles")
