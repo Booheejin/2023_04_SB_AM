@@ -1,75 +1,23 @@
 package com.koreaIT.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.vo.Article;
 
 @Controller
 public class UsrArticleController {
 	
-	private int lastArticleId;
-	private List<Article> articles;	
+	private ArticleService articleService;
 	
-	public UsrArticleController() {
-		this.lastArticleId = 0;
-		this.articles = new ArrayList<>();
-		
-		makeTestDate();
-	}
-	
-//	서비스 메서드
-	private void makeTestDate() {
-		for(int i = 1; i <= 10; i++) {
-			
-			String title = "제목" + i;
-			String body = "내용" + i;		
-			
-			writeArticle(title,body);
-			
-		}
-		
-	}
-	private Article getArticleById(int id) {
-		
-		for(Article article : articles) {
-			if(article.getId() == id) {
-				return article;
-			}
-		}
-		return null;
-	}
-	
-	private Article deleteArticle(int id) {
-		Article article = getArticleById(id);
-		
-		articles.remove(article);
-		
-		return article;
-	}
-	
-	private void modifyArticle(int id ,String title, String body) {
-		Article article = getArticleById(id);
-		
-		article.setTitle(title);
-		article.setBody(body);
-		
-	}
-	
-
-	private Article writeArticle(String title,String body) {
-		
-		int id = this.lastArticleId +1;
-		this.lastArticleId = id;
-		Article article = new Article(id,title,body);
-		
-		articles.add(article);
-		
-		return article;
+	@Autowired
+	public UsrArticleController(ArticleService articleService) {
+		this.articleService = articleService;
 	}
 	
 //	액션 메서드
@@ -77,28 +25,28 @@ public class UsrArticleController {
 	@ResponseBody
 	public Article doAdd(String title,String body) {
 		
-		return writeArticle(title,body);
+		return articleService.writeArticle(title, body);
 	}
 	
 	@RequestMapping("/usr/article/getArticles")
 	@ResponseBody
 	public List<Article> getArticles() {
 		
-		return this.articles;
+		return articleService.getArticles();
 	}
 	
 	@RequestMapping("/usr/article/dodelete")
 	@ResponseBody
 	public String doDelete(int id) {
 		
-		Article article = getArticleById(id);
+		Article article = articleService.getArticleById(id);
 		
 		
 		if(article == null) {
 			return id + "번 게시물은 존재하지 않습니다.";
 		}
 		
-		deleteArticle(id);
+		articleService.deleteArticle(id);
 		
 		return id +"번 게시물을 삭제했습니다.";
 	}
@@ -107,13 +55,13 @@ public class UsrArticleController {
 	@ResponseBody
 	public String doModify(int id , String title , String body) {
 		
-		Article article = getArticleById(id);
+		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
 			return id + "번 게시물은 존재하지 않습니다.";
 		}
 		
-		modifyArticle(id,title,body);
+		articleService.modifyArticle(id,title,body);
 		
 		return id +"번 게시물을 수정했습니다.";
 	}
@@ -122,7 +70,7 @@ public class UsrArticleController {
 	@ResponseBody
 	public Object getArticle(int id) {
 		
-		Article article = getArticleById(id);
+		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
 			return id + "번 게시물은 존재하지 않습니다.";
