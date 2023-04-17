@@ -10,6 +10,7 @@ import com.koreaIT.demo.vo.Article;
 
 @Service
 public class ArticleService {
+	
 	private ArticleRepository articleRepository;
 
 	@Autowired

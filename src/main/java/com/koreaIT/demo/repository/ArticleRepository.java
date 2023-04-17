@@ -9,6 +9,7 @@ import com.koreaIT.demo.vo.Article;
 
 @Component
 public class ArticleRepository {
+	
 	private int lastArticleId;
 	private List<Article> articles;
 
