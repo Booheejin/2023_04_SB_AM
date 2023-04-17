@@ -31,4 +31,6 @@ updateDate = NOW(),
 title = 'test3',
 `body` = 'test3';
 
+SELECT LAST_INSERT_ID();
+
 SELECT * FROM article;

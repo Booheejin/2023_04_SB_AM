@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.koreaIT.demo.repository.MemberRepository">
+	
+	<select id="joinMember">
+		INSERT INTO `member`
+				SET regDate = NOW(),
+					updateDate = NOW(),
+					loginId = #{loginId},
+					loginPw = #{loginPw},
+					`name` = #{name},
+					nickname = #{nickname},
+					cellphoneNum = 12341234,
+					email ='email'
+	</select>
+	
+</mapper>
+
