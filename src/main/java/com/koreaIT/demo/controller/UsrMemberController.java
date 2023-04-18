@@ -45,13 +45,13 @@ private MemberService memberService;
 		int id = memberService.joinMember(loginId, loginPw, name, nickname,cellphoneNum,email);
 		
 		if(id == -1) {
-			return "이미 사용중인 아이디 입니다.";
+			return Util.f("이미 사용중인 아이디(%s)입니다.",loginId);
 		}
 		if(id == -2) {
-			return "이미 사용중인 닉네임 입니다.";
+			return Util.f("이미 사용중인 닉네임(%s)입니다.",nickname);
 		}
 		if(id == -3) {
-			return "이미 사용중인 이름과 이메일 입니다.";
+			return Util.f("이미 사용중인 이름(%s),이메일(%s)입니다.",name,email);
 		}
 		
 		return memberService.getMemberById(id);
