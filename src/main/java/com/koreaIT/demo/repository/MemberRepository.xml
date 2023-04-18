@@ -26,5 +26,13 @@
 	<select id="getMemberByLoginId" resultType="Member">	
 		SELECT * FROM `member` WHERE loginId = #{loginId}
 	</select>
+	
+	<select id="getMemberByNickname" resultType="Member">	
+		SELECT * FROM `member` WHERE nickname = #{nickname}
+	</select>
+	
+	<select id="getMemberByNameAndEmail" resultType="Member">	
+		SELECT * FROM `member` WHERE name = #{name} AND email = #{email}
+	</select>
 </mapper>
 
