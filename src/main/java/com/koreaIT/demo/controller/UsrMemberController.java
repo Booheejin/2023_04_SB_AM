@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.demo.service.MemberService;
+import com.koreaIT.demo.util.Util;
 
 @Controller
 public class UsrMemberController {
@@ -21,22 +22,22 @@ private MemberService memberService;
 	@ResponseBody
 	public Object doJoin(String loginId, String loginPw,String name,String nickname,String cellphoneNum,String email) {
 		
-		if(loginId == null || loginId.trim().length() == 0) {
+		if(Util.empty(loginId)) {
 			return "아이디를 입력해 주세요";
 		}
-		if(loginPw == null || loginPw.trim().length() == 0) {
+		if(Util.empty(loginPw)) {
 			return "비밀번호를 입력해 주세요";
 		}
-		if(name == null || name.trim().length() == 0) {
+		if(Util.empty(name)) {
 			return "이름을 입력해 주세요";
 		}
-		if(nickname == null || nickname.trim().length() == 0) {
+		if(Util.empty(nickname)) {
 			return "닉네임을 입력해 주세요";
 		}
-		if(cellphoneNum == null || cellphoneNum.trim().length() == 0) {
+		if(Util.empty(cellphoneNum)) {
 			return "폰번호를 입력해 주세요";
 		}
-		if(email == null || email.trim().length() == 0) {
+		if(Util.empty(email)) {
 			return "email을 입력해 주세요";
 		}
 		
