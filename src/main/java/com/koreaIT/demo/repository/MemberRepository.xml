@@ -11,9 +11,16 @@
 					loginPw = #{loginPw},
 					`name` = #{name},
 					nickname = #{nickname},
-					cellphoneNum = 12341234,
-					email ='email'
+					cellphoneNum = #{cellphoneNum},
+					email = #{email}
 	</select>
 	
+	<select id="getMemberById" resultType="Member">
+		SELECT * FROM `member` WHERE id = #{id}
+	</select>
+	
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
 </mapper>
 

@@ -2,10 +2,7 @@ package com.koreaIT.demo.repository;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import com.koreaIT.demo.vo.Article;
 
