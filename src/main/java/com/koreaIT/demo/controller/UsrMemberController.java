@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.demo.service.MemberService;
 import com.koreaIT.demo.util.Util;
+import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.ResultData;
 
 @Controller
@@ -21,7 +22,7 @@ private MemberService memberService;
 	
 	@RequestMapping("/usr/member/dojoin")
 	@ResponseBody
-	public ResultData<Object> doJoin(String loginId, String loginPw,String name,String nickname,String cellphoneNum,String email) {
+	public ResultData<Member> doJoin(String loginId, String loginPw,String name,String nickname,String cellphoneNum,String email) {
 		
 		if(Util.empty(loginId)) {
 			return ResultData.from("F-1","아이디를 입력해 주세요");
@@ -49,10 +50,10 @@ private MemberService memberService;
 		}
 		
 		
-		ResultData<Object> doJoinRd = memberService.joinMember(loginId, loginPw, name, nickname,cellphoneNum,email);
+		ResultData<Integer> doJoinRd = memberService.joinMember(loginId, loginPw, name, nickname,cellphoneNum,email);
 		
 		if(doJoinRd.isFail()) {
-			return doJoinRd;
+			return ResultData.from(doJoinRd.getResultCode(),doJoinRd.getMsg());
 
 		}
 		return ResultData.from(doJoinRd.getResultCode(),doJoinRd.getMsg(),memberService.getMemberById(((int)doJoinRd.getData1()))) ;
