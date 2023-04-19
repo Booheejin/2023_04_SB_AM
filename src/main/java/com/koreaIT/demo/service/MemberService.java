@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.koreaIT.demo.repository.MemberRepository;
+import com.koreaIT.demo.util.Util;
 import com.koreaIT.demo.vo.Member;
+import com.koreaIT.demo.vo.ResultData;
 
 @Service
 public class MemberService {
@@ -17,28 +19,29 @@ public class MemberService {
 
 	}
 	
-	public int joinMember(String loginId,String loginPw,String name,String nickname,String cellphoneNum,String email) {
+	public ResultData joinMember(String loginId,String loginPw,String name,String nickname,String cellphoneNum,String email) {
 		
 		Member existsMember = getMemberByLoginId(loginId);
 		if(existsMember != null) {
-			return -1;
+			return ResultData.from("F-7",Util.f("이미 사용중인 아이디(%s) 입니다.", loginId));
 		}
 		
 		existsMember = getMemberByNickname(nickname);
 		
 		if(existsMember != null) {
-			return -2;
+			return ResultData.from("F-8",Util.f("이미 사용중인 닉네임(%s) 입니다.", nickname));
 		}
 		
 		existsMember = getMemberByNameAndEmail(name,email);
 		
 		if(existsMember != null) {
-			return -3;
+			return ResultData.from("F-9",Util.f("이미 사용중인 이름(%s)과 이메일(%s) 입니다.",name,email));
 		}
 				
 		memberRepository.joinMember(loginId, loginPw,name,nickname,cellphoneNum,email);
 		
-		return memberRepository.getLastInsertId();
+		
+		return ResultData.from("S-1",Util.f("%s님 회원가입이 완료되었습니다", name),memberRepository.getLastInsertId());
 	}
 	
 	private Member getMemberByNameAndEmail(String name, String email) {
