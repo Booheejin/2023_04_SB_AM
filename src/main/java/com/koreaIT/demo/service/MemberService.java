@@ -44,6 +44,7 @@ public class MemberService {
 		return ResultData.from("S-1",Util.f("%s님 회원가입이 완료되었습니다", name),memberRepository.getLastInsertId());
 	}
 	
+	
 	private Member getMemberByNameAndEmail(String name, String email) {
 		
 		return memberRepository.getMemberByNameAndEmail(name,email);
@@ -54,7 +55,7 @@ public class MemberService {
 		return memberRepository.getMemberByNickname(nickname);
 	}
 
-	private Member getMemberByLoginId(String loginId) {
+	public Member getMemberByLoginId(String loginId) {
 		
 		return memberRepository.getMemberByLoginId(loginId);
 	}
