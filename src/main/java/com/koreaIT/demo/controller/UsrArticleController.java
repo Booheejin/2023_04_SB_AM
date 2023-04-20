@@ -73,7 +73,13 @@ public class UsrArticleController {
 		
 		
 		if(article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다.", id));
+			return ResultData.from("F-N", Util.f("%d번 게시물은 존재하지 않습니다.", id));
+		}
+		
+		int memberId = (int) httpSession.getAttribute("loginedMemberId");
+		
+		if(article.getMemberId() != memberId) {
+			return ResultData.from("F-1", Util.f("%d번 게시물 삭제 권한이 없습니다.", id));
 		}
 		
 		articleService.deleteArticle(id);
@@ -93,8 +99,14 @@ public class UsrArticleController {
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다.", id));
+			return ResultData.from("F-N", Util.f("%d번 게시물은 존재하지 않습니다.", id));
 			
+		}
+		
+		int memberId = (int) httpSession.getAttribute("loginedMemberId");
+		
+		if(article.getMemberId() != memberId) {
+			return ResultData.from("F-1", Util.f("%d번 게시물 수정 권한이 없습니다.", id));
 		}
 		
 		articleService.modifyArticle(id,title,body);
@@ -110,7 +122,7 @@ public class UsrArticleController {
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다.", id));
+			return ResultData.from("F-N", Util.f("%d번 게시물은 존재하지 않습니다.", id));
 		}
 		
 		return ResultData.from("S-1", Util.f("%d번 게시물 입니다.", id),article);
