@@ -41,7 +41,7 @@ public class MemberService {
 		memberRepository.joinMember(loginId, loginPw,name,nickname,cellphoneNum,email);
 		
 		
-		return ResultData.from("S-1",Util.f("%s님 회원가입이 완료되었습니다", name),memberRepository.getLastInsertId());
+		return ResultData.from("S-1",Util.f("%s님 회원가입이 완료되었습니다", name),"memberId",memberRepository.getLastInsertId());
 	}
 	
 	
