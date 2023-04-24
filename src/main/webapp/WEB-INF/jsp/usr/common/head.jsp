@@ -22,9 +22,9 @@
 		<a href="/" class="h-full px-3 flex items-center"><span>로고</span></a>
 		<div class="flex-grow"></div>
 		<ul class="flex">
-			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/"><span>HOME</span></a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/article/list"><span>LIST</span></a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/member/login"><span>LOGIN</span></a></li>
+			<li class="hover:underline hover:text-red-500"><a class="h-full px-3 flex items-center" href="/"><span>HOME</span></a></li>
+			<li class="hover:underline hover:text-red-500"><a class="h-full px-3 flex items-center" href="/usr/article/list"><span>LIST</span></a></li>
+			<li class="hover:underline hover:text-red-500"><a class="h-full px-3 flex items-center" href="/usr/member/login"><span>LOGIN</span></a></li>
 		</ul>
 	</div>
 
