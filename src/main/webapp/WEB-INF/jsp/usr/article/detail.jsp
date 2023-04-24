@@ -25,7 +25,7 @@
 							<td>${article.updateDate }</td>
 						</tr>
 						<tr>
-							<th>수정날짜</th>
+							<th>작성자</th>
 							<td>${article.writerName }</td>
 						</tr>
 						<tr>
@@ -40,9 +40,11 @@
 				</table>
 			</div>
 			<div class="btns">
-				<button type="button" onclick="history.back();">뒤로가기</button>
-				<a class="btn-text-link" href="modify?id=${article.id }">수정</a>
-				<a class="btn-text-link" href="dodelet?id=${article.id }">삭제</a>
+				<button  class="btn-text-link"  type="button" onclick="history.back();">뒤로가기</button>
+				<c:if test="${article.actorCanChangeData }">
+					<a class="btn-text-link" href="delete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
+					<a class="btn-text-link" href="modify?id=${article.id }">수정</a>				
+				</c:if>
 			</div>
 		</div>
 	</section>

@@ -20,8 +20,8 @@
 							<tr>
 								<td>${article.id }</td>
 								<td>${article.regDate }</td>
-								<td><a class="hover:underline hover:text-red-500"  href="detail?id=${article.id }">${article.title }</a></td>
-								<td>${article.memberId }</td>
+								<td><a class="btn-text-link"  href="detail?id=${article.id }">${article.title }</a></td>
+								<td>${article.writerName }</td>
 							</tr>
 						</c:forEach>
 					</tbody>

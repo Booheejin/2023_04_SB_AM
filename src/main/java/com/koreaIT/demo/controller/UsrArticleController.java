@@ -65,31 +65,32 @@ public class UsrArticleController {
 		return "usr/article/list"; 
 	}
 	
-	@RequestMapping("/usr/article/dodelete")
-	@ResponseBody
-	public ResultData doDelete(HttpSession httpSession,int id) {
+	@RequestMapping("/usr/article/detail")
+	public String showDetail(Model model,HttpSession httpSession, int id) {
 		
-		if(httpSession.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-A","로그인을 해주세요.");
+		int loginedMemberId = 0;
+		
+		if(httpSession.getAttribute("loginedMemberId") != null) {
+			loginedMemberId =(int) httpSession.getAttribute("loginedMemberId");
 		}
 		
-		Article article = articleService.getArticleById(id);
+		Article article = articleService.getForPrintArticle(loginedMemberId ,id);
 		
+		model.addAttribute("article",article);
 		
-		if(article == null) {
-			return ResultData.from("F-N", Util.f("%d번 게시물은 존재하지 않습니다.", id));
-		}
+		return "usr/article/detail";
+	}
+	
+	@RequestMapping("/usr/article/delete")
+	public String doDelete(Model model,HttpSession httpSession,int id) {
 		
-		int memberId = (int) httpSession.getAttribute("loginedMemberId");
+	    articleService.deleteArticle(id);
+	    
+	    List<Article> articles =articleService.getArticles();
 		
-		if(article.getMemberId() != memberId) {
-			return ResultData.from("F-1", Util.f("%d번 게시물 삭제 권한이 없습니다.", id));
-		}
+		model.addAttribute("articles",articles);
 		
-		
-		articleService.deleteArticle(id);
-		
-		return ResultData.from("S-1", Util.f("%d번 게시물을 삭제했습니다.", id));
+		return "usr/article/list";
 	}
 	
 	@RequestMapping("/usr/article/domodify")
@@ -119,15 +120,6 @@ public class UsrArticleController {
 		
 	}
 	
-	@RequestMapping("/usr/article/detail")
-	public String showDetail(Model model,int id) {
-		
-		Article article = articleService.getForPrintArticle(id);
-		
-		model.addAttribute("article",article);
-		
-		return "usr/article/detail";
-	}
 
 }
 

@@ -35,22 +35,29 @@ INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 1,
-title = 'test1',
-`body` = 'test1';
+title = '제목1',
+`body` = '내용1';
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 2,
-title = 'test2',
-`body` = 'test2';
+title = '제목2',
+`body` = '내용2';
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 3,
-title = 'test3',
-`body` = 'test3';
+title = '제목3',
+`body` = '내용3';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 3,
+title = '제목4',
+`body` = '내용4';
 
 # member 테스트 데이터
 
@@ -72,8 +79,8 @@ SET regDate = NOW(),
 updateDate = NOW(),
 loginId = 'test2',
 loginPw = 'test2',
-`name` = 'test2',
-nickname = 'test2',
+`name` = '유저2',
+nickname = '유저2',
 cellphoneNum = '12341234',
 email ='email_2';
 
@@ -82,8 +89,8 @@ SET regDate = NOW(),
 updateDate = NOW(),
 loginId = 'test3',
 loginPw = 'test3',
-`name` = 'test3',
-nickname = 'test3',
+`name` = '유저3',
+nickname = '유저3',
 cellphoneNum = '12341234',
 email ='email_3';
 
@@ -92,10 +99,11 @@ SET regDate = NOW(),
 updateDate = NOW(),
 loginId = 'test4',
 loginPw = 'test4',
-`name` = 'test4',
-nickname = 'test4',
+`name` = '유저4',
+nickname = '유저4',
 cellphoneNum = '12341234',
 email ='email_4';
+
 
 SELECT * FROM article;
 
@@ -107,3 +115,9 @@ SELECT LAST_INSERT_ID();
 INSERT INTO article(regDate,updateDate, title, `body`)
 SELECT NOW(), NOW(), CONCAT('제목_',RAND()), CONCAT('내용_',RAND())
 FROM article;
+
+SELECT A.*, M.name AS writerName
+FROM article A
+INNER JOIN `member` M
+ON A.memberId = M.id
+WHERE A.id = #{id}
