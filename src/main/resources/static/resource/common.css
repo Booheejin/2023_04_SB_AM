@@ -1,0 +1,23 @@
+/* @charset "UTF-8"; */
+@font-face {
+    font-family: 'KyoboHandwriting2021sjy';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KyoboHandwriting2021sjy.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html >body {
+	font-family: 'KyoboHandwriting2021sjy', sans-serif;
+}
+
+.table-box-type-1 > table {
+	width: 100%;
+	
+}
+
+.table-box-type-1 > table , .table-box-type-1 > table td {
+	border:1px solid black;
+	padding: 10px;
+	text-align: center;
+	
+}
