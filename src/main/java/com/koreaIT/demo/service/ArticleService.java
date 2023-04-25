@@ -46,14 +46,14 @@ public class ArticleService {
 		articleRepository.deleteArticle(id);
 	}
 
-	public ResultData actorCanModify(int loginedMemberId, int memberId) {
-		
-		if(loginedMemberId != memberId) {
-			return ResultData.from("F-1", "수정 권한이 없습니다.");
-		}
-		
-		return ResultData.from("S-1", "수정가능");
-	}
+//	public ResultData actorCanModify(int loginedMemberId, int memberId) {
+//		
+//		if(loginedMemberId != memberId) {
+//			return ResultData.from("F-1", "수정 권한이 없습니다.");
+//		}
+//		
+//		return ResultData.from("S-1", "수정가능");
+//	}
 
 	public Article getForPrintArticle(int loginedMemberId, int id) {
 
@@ -69,12 +69,12 @@ public class ArticleService {
 			return;
 		}
 
-		ResultData actorCanChangeDataRd = actorCanDelete(loginedMemberId, article);
+		ResultData actorCanChangeDataRd = actorCanDM(loginedMemberId, article);
 
 		article.setActorCanChangeData(actorCanChangeDataRd.isSuccess());
 	}
 
-	private ResultData actorCanDelete(int loginedMemberId, Article article) {
+	public ResultData actorCanDM(int loginedMemberId, Article article) {
 		if(article == null) {
 			return ResultData.from("F-1", "해당 게시물은 존재하지 않습니다");
 		}
@@ -83,7 +83,7 @@ public class ArticleService {
 			return ResultData.from("F-B", "해당 게시물에 대한 권한이 없습니다");	
 		}
 
-		return ResultData.from("S-1", "삭제 가능");
+		return ResultData.from("S-1", "가능");
 	}
 
 }

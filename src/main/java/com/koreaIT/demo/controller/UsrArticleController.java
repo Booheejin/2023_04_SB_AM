@@ -2,6 +2,7 @@ package com.koreaIT.demo.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.util.Util;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.ResultData;
+import com.koreaIT.demo.vo.Rq;
 
 @Controller
 public class UsrArticleController {
@@ -28,10 +30,12 @@ public class UsrArticleController {
 //	액션 메서드
 	@RequestMapping("/usr/article/doadd")
 	@ResponseBody
-	public ResultData<Article> doAdd(HttpSession httpSession,String title,String body) {
+	public ResultData<Article> doAdd(HttpServletRequest req, String title,String body) {
 		
-		if(httpSession.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-A","로그인을 해주세요.");
+		Rq rq = new Rq(req);
+
+		if (rq.getLoginedMemberId() == 0) {
+			return ResultData.from("F-A", "로그인 후 이용해주세요");
 		}
 		
 		if(Util.empty(title)) {
@@ -43,9 +47,7 @@ public class UsrArticleController {
 
 		}
 		
-		int memberId = (int) httpSession.getAttribute("loginedMemberId");
-		
-		articleService.writeArticle(memberId,title, body);
+		articleService.writeArticle(rq.getLoginedMemberId(), title, body);
 		
 		int id = articleService.getLastInsertId();
 		
@@ -66,15 +68,11 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(Model model,HttpSession httpSession, int id) {
+	public String showDetail(Model model, HttpServletRequest req, int id) {
 		
-		int loginedMemberId = 0;
+		Rq rq = new Rq(req);
 		
-		if(httpSession.getAttribute("loginedMemberId") != null) {
-			loginedMemberId =(int) httpSession.getAttribute("loginedMemberId");
-		}
-		
-		Article article = articleService.getForPrintArticle(loginedMemberId ,id);
+		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
 		model.addAttribute("article",article);
 		
@@ -82,22 +80,36 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/delete")
-	public String doDelete(Model model,HttpSession httpSession,int id) {
+	@ResponseBody
+	public String doDelete(HttpServletRequest req,int id) {
 		
-	    articleService.deleteArticle(id);
-	    
-	    List<Article> articles =articleService.getArticles();
+		Rq rq = new Rq(req);
+
+		if (rq.getLoginedMemberId() == 0) {
+			return Util.jsHistoryBack("로그인 후 이용해주세요");
+		}
 		
-		model.addAttribute("articles",articles);
+		Article article = articleService.getArticleById(id);
+
+		ResultData actorCanModifyRd = articleService.actorCanDM(rq.getLoginedMemberId(), article);
 		
-		return "usr/article/list";
+		if (actorCanModifyRd.isFail()) {
+			return Util.jsHistoryBack(actorCanModifyRd.getMsg());
+		}
+
+		articleService.deleteArticle(id);
+		
+		
+		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다", id), "list");
 	}
 	
 	@RequestMapping("/usr/article/domodify")
 	@ResponseBody
-	public ResultData<Article> doModify(HttpSession httpSession,int id , String title , String body) {
+	public ResultData<Article> doModify(HttpServletRequest req,int id , String title , String body) {
 		
-		if(httpSession.getAttribute("loginedMemberId") == null) {
+		Rq rq = new Rq(req);
+		
+		if(rq.getLoginedMemberId() == 0) {
 			return ResultData.from("F-A","로그인을 해주세요.");
 		}
 		
@@ -109,10 +121,10 @@ public class UsrArticleController {
 			
 		}
 		
-		ResultData actorCanModifyRd = articleService.actorCanModify((int)httpSession.getAttribute("loginedMemberId"),article.getMemberId());
+		ResultData actorCanDM = articleService.actorCanDM(rq.getLoginedMemberId(),article);
 		
-		if(actorCanModifyRd.isFail()) {
-			return ResultData.from(actorCanModifyRd.getResultCode(),actorCanModifyRd.getMsg());
+		if(actorCanDM.isFail()) {
+			return ResultData.from(actorCanDM.getResultCode(),actorCanDM.getMsg());
 		}
 		
 		
