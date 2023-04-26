@@ -1,9 +1,7 @@
 package com.koreaIT.demo.controller;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,7 +70,9 @@ public class UsrArticleController {
 		
 		Rq rq = (Rq)req.getAttribute("rq");
 		
-		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
+		Article article = articleService.getForPrintArticle(id);
+
+		articleService.actorCanChangeData(rq.getLoginedMemberId(), article);
 		
 		model.addAttribute("article",article);
 		
@@ -104,38 +104,43 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/modify")
-	public String Modify() {
-		
+	public String modify(HttpServletRequest req, Model model, int id) {
+
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		Article article = articleService.getForPrintArticle(id);
+
+		ResultData actorCanDM = articleService.actorCanDM(rq.getLoginedMemberId(), article);
+
+		if (actorCanDM.isFail()) {
+			return rq.jsReturnOnView(actorCanDM.getMsg(), true);
+		}
+
+		model.addAttribute("article", article);
+
 		return "usr/article/modify";
 	}
+
 	
 	@RequestMapping("/usr/article/domodify")
 	@ResponseBody
-	public ResultData<Article> doModify(HttpServletRequest req,int id , String title , String body) {
+	public ResultData<Article> doModify(HttpServletRequest req, int id, String title, String body) {
 		
-		Rq rq = (Rq)req.getAttribute("rq");
-		
-		if(rq.getLoginedMemberId() == 0) {
-			return ResultData.from("F-A","로그인을 해주세요.");
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		if (rq.getLoginedMemberId() == 0) {
+			return ResultData.from("F-A", "로그인 후 이용해주세요");
 		}
-		
 		
 		Article article = articleService.getArticleById(id);
 		
-		if(article == null) {
-			return ResultData.from("F-N", Util.f("%d번 게시물은 존재하지 않습니다.", id));
-			
+		ResultData actorCanModifyRd = articleService.actorCanDM(rq.getLoginedMemberId(), article);
+		
+		if (actorCanModifyRd.isFail()) {
+			return ResultData.from(actorCanModifyRd.getResultCode(), actorCanModifyRd.getMsg());
 		}
 		
-		ResultData actorCanDM = articleService.actorCanDM(rq.getLoginedMemberId(),article);
-		
-		if(actorCanDM.isFail()) {
-			return ResultData.from(actorCanDM.getResultCode(),actorCanDM.getMsg());
-		}
-		
-		
-		return articleService.modifyArticle(id,title,body);
-		
+		return articleService.modifyArticle(id, title, body);
 	}
 	
 

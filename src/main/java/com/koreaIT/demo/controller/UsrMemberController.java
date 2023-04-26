@@ -70,7 +70,7 @@ private MemberService memberService;
 	}
 	
 	@RequestMapping("/usr/member/login")
-	public String login() {
+	public String login() {			
 		return "usr/member/login";
 	}
 	
