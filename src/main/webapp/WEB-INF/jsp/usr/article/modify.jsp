@@ -8,14 +8,14 @@
 			<form action="domodify" method="POST">
 				<input type="hidden" name="id" value="${article.id }"/>
 				<div class="table-box-type-1">
-					<table>
+					<table  class="table table-zebra w-full">
 						<colgroup>
 							<col width="200" />
 						</colgroup>
 						<tbody>
 							<tr>
 								<th>번호</th>
-								<td>${article.id }</td>
+								<td><div class="badge">${article.id }</div></td>
 							</tr>
 							<tr>
 								<th>작성날짜</th>
@@ -31,7 +31,7 @@
 							</tr>
 							<tr>
 								<th>제목</th>
-								<td><input type="text" placeholder="Type here" class="input input-bordered input-accent w-full max-w-xs" name="title" value="${article.title }" placeholder="제목을 입력해주세요"/></td>
+								<td><input  type="text" placeholder="Type here" class="input input-bordered input-accent w-full max-w-xs" name="title" value="${article.title }" placeholder="제목을 입력해주세요"/></td>
 							</tr>
 							<tr>
 								<th>내용</th>

@@ -11,7 +11,7 @@
 				</div>
 			</c:if>
 			<div class="table-box-type-1">
-				<table>
+				<table class="table table-zebra w-full">
 					<thead>
 						<tr>
 							<th>번호</th>
