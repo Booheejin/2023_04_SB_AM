@@ -7,7 +7,7 @@
 		<div class="container mx-auto px-3">
 			<form action="dologin" method="post">
 				<div class="table-box-type-1">
-					<table>
+					<table class="table table-zebra w-full">
 						<colgroup>
 							<col width="200" />
 						</colgroup>
@@ -21,15 +21,15 @@
 								<td><input class="w-96" type="text" name="loginPw" placeholder="비밀번호를 입력해주세요."/></td>
 							</tr>
 							<tr>
-								<td colspan="2"><button>로그인</button></td>
+								<td colspan="2"><button class="btn-text-link btn btn-active btn-ghost" >로그인</button></td>
 							</tr>
 							
 						</tbody>
 					</table>
 				</div>
 			</form>
-			<div class="btns">
-			<button  class="btn-text-link"  type="button" onclick="history.back();">뒤로가기</button>
+			<div class="btns" >
+			<button  class="btn-text-link btn btn-active btn-ghost"  type="button" onclick="history.back();">뒤로가기</button>
 					
 			</div>
 		</div>

@@ -6,7 +6,7 @@
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
 			<div class="table-box-type-1">
-				<table>
+				<table class="table table-zebra w-full">
 				<colgroup>
 							<col width="200" />
 						</colgroup>
@@ -40,10 +40,10 @@
 				</table>
 			</div>
 			<div class="btns">
-				<button  class="btn-text-link"  type="button" onclick="history.back();">뒤로가기</button>
+				<button class="btn-text-link btn btn-active btn-ghost"  type="button" onclick="history.back();">뒤로가기</button>
 				<c:if test="${article.actorCanChangeData }">
-					<a class="btn-text-link" href="delete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
-					<a class="btn-text-link" href="modify?id=${article.id }">수정</a>				
+					<a class="btn-text-link btn btn-active btn-ghost" href="delete?id=${article.id }" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
+					<a class="btn-text-link btn btn-active btn-ghost" href="modify?id=${article.id }">수정</a>				
 				</c:if>
 			</div>
 		</div>
