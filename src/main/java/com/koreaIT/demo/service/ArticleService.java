@@ -31,8 +31,8 @@ public class ArticleService {
 		return articleRepository.getArticleById(id);
 	}
 
-	public List<Article> getArticles(){
-		return articleRepository.getArticles();
+	public List<Article> getArticles(int boardId){
+		return articleRepository.getArticles(boardId);
 	}
 
 	public ResultData<Article> modifyArticle(int id, String title, String body) {
