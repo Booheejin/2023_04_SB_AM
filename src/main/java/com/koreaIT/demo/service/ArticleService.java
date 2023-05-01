@@ -72,4 +72,9 @@ public class ArticleService {
 		return ResultData.from("S-1", "가능");
 	}
 
+	public int getArticlesCnt(int boardId) {
+		// TODO Auto-generated method stub
+		return articleRepository.getArticlesCnt(boardId);
+	}
+
 }
