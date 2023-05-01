@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.demo.service.ArticleService;
@@ -65,9 +66,15 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpServletRequest req,Model model, int boardId) {
+	public String showList(HttpServletRequest req,Model model,  @RequestParam(defaultValue = "1") int boardId,
+			@RequestParam(defaultValue = "1") int page) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
+		
+		if (page <= 0) {
+			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다", true);
+		}
+		
 		
 		Board board = boardService.getBoardById(boardId);
 		
@@ -77,8 +84,15 @@ public class UsrArticleController {
 
 		int articlesCnt = articleService.getArticlesCnt(boardId);
 
-		List<Article> articles = articleService.getArticles(boardId);
 		
+		int itemsInAPage = 10;
+
+		int pagesCount = (int) Math.ceil((double) articlesCnt / itemsInAPage);
+
+		List<Article> articles = articleService.getArticles(boardId, itemsInAPage, page);
+
+		model.addAttribute("pagesCount", pagesCount);
+		model.addAttribute("page", page);
 		model.addAttribute("articlesCnt", articlesCnt);
 		model.addAttribute("articles",articles);
 		model.addAttribute("board", board);

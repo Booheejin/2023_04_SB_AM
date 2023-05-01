@@ -31,8 +31,12 @@ public class ArticleService {
 		return articleRepository.getArticleById(id);
 	}
 
-	public List<Article> getArticles(int boardId){
-		return articleRepository.getArticles(boardId);
+	public List<Article> getArticles(int boardId, int itemsInAPage, int page){
+		
+		int limitStart = (page - 1) * itemsInAPage;
+
+		
+		return articleRepository.getArticles(boardId,itemsInAPage,limitStart);
 	}
 
 	public ResultData<Article> modifyArticle(int id, String title, String body) {

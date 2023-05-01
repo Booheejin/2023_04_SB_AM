@@ -19,7 +19,7 @@
 										<input type="radio" name="boardId" value="1" checked/>
 										&nbsp;공지사항
 									</label>
-									&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<label>
 										<input type="radio" name="boardId" value="2"/>
 										&nbsp;자유
