@@ -31,12 +31,12 @@ public class ArticleService {
 		return articleRepository.getArticleById(id);
 	}
 
-	public List<Article> getArticles(int boardId, int itemsInAPage, int page){
+	public List<Article> getArticles(int boardId, String searchKeywordType, String searchKeyword, int itemsInAPage, int page){
 		
 		int limitStart = (page - 1) * itemsInAPage;
 
 		
-		return articleRepository.getArticles(boardId,itemsInAPage,limitStart);
+		return articleRepository.getArticles(boardId,searchKeywordType,searchKeyword,itemsInAPage,limitStart);
 	}
 
 	public ResultData<Article> modifyArticle(int id, String title, String body) {
@@ -76,9 +76,20 @@ public class ArticleService {
 		return ResultData.from("S-1", "가능");
 	}
 
-	public int getArticlesCnt(int boardId) {
+	public int getArticlesCnt(int boardId, String searchKeywordType, String searchKeyword) {
 		// TODO Auto-generated method stub
-		return articleRepository.getArticlesCnt(boardId);
+		return articleRepository.getArticlesCnt(boardId,searchKeywordType,searchKeyword);
+	}
+	
+	public ResultData<Integer> getArticlesCount(int id) {
+		
+		int affectedRowsCount = articleRepository.getArticlesCount(id);
+		
+		if(affectedRowsCount == 0) {
+			return ResultData.from("F-1", "해당 게시물은 존재하지 않습니다.","affectedRowsCount",affectedRowsCount);
+		}
+		
+		return ResultData.from("S-1", "조회수 증가", "affectedRowsCount", affectedRowsCount);
 	}
 
 }

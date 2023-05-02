@@ -67,7 +67,8 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/list")
 	public String showList(HttpServletRequest req,Model model,  @RequestParam(defaultValue = "1") int boardId,
-			@RequestParam(defaultValue = "1") int page) {
+			@RequestParam(defaultValue = "1") int page ,@RequestParam(defaultValue = "제목") String searchKeyword ,
+			@RequestParam(defaultValue = "")String searchKeywordType) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 		
@@ -82,20 +83,22 @@ public class UsrArticleController {
 			return rq.jsReturnOnView("존재하지 않는 게시판입니다", true);
 		}
 
-		int articlesCnt = articleService.getArticlesCnt(boardId);
+		int articlesCnt = articleService.getArticlesCnt(boardId,searchKeywordType,searchKeyword);
 
 		
 		int itemsInAPage = 10;
 
 		int pagesCount = (int) Math.ceil((double) articlesCnt / itemsInAPage);
 
-		List<Article> articles = articleService.getArticles(boardId, itemsInAPage, page);
+		List<Article> articles = articleService.getArticles(boardId,searchKeywordType,searchKeyword, itemsInAPage, page);
 
 		model.addAttribute("pagesCount", pagesCount);
 		model.addAttribute("page", page);
 		model.addAttribute("articlesCnt", articlesCnt);
 		model.addAttribute("articles",articles);
 		model.addAttribute("board", board);
+		model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("searchKeywordType", searchKeywordType);
 		
 		return "usr/article/list"; 
 	}
@@ -104,6 +107,12 @@ public class UsrArticleController {
 	public String showDetail(Model model, HttpServletRequest req, int id) {
 		
 		Rq rq = (Rq)req.getAttribute("rq");
+		
+		ResultData<Integer> getArticlesCountRd = articleService.getArticlesCount(id);
+		
+		if (getArticlesCountRd.isFail()) {
+			return rq.jsReturnOnView(getArticlesCountRd.getMsg(), true);
+		}
 		
 		Article article = articleService.getForPrintArticle(id);
 
@@ -119,6 +128,7 @@ public class UsrArticleController {
 	public String doDelete(HttpServletRequest req,int id) {
 		
 		Rq rq = (Rq)req.getAttribute("rq");
+		
 		
 		Article article = articleService.getArticleById(id);
 

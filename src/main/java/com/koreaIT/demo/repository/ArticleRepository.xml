@@ -36,7 +36,23 @@
 			ON A.memberId = M.id
 			WHERE 1 = 1
 			<if test="boardId != 0">
-				AND boardId = #{boardId}
+				AND A.boardId = #{boardId}
+			</if>
+			<if test="searchKeyword != ''">
+				<choose>
+					<when test="searchKeywordType == 'title'">
+						AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<when test="searchKeywordType == 'body'">
+						AND A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<otherwise>
+						AND (
+							A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+						)
+					</otherwise>
+				</choose>
 			</if>
 			ORDER BY id DESC
 			LIMIT #{limitStart}, #{itemsInAPage}
@@ -47,6 +63,22 @@
 		SELECT COUNT(*)
 			FROM article
 			WHERE boardId = #{boardId}
+			<if test="searchKeyword != ''">
+				<choose>
+					<when test="searchKeywordType == 'title'">
+						AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<when test="searchKeywordType == 'body'">
+						AND body LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<otherwise>
+						AND (
+							title LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR body LIKE CONCAT('%', #{searchKeyword}, '%')
+						)
+					</otherwise>
+				</choose>
+			</if>
 	</select>	
 		
 	<update id="modifyArticle">
@@ -64,6 +96,11 @@
 			WHERE id = #{id}
 	</update>
 	
+	<update id="getArticlesCount">
+		UPDATE article
+			SET count = count + 1
+			WHERE id = #{id}
+	</update>
 	
 	<delete id="deleteArticle">
 		DELETE FROM article WHERE id = #{id}
