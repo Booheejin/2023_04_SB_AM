@@ -45,6 +45,8 @@ public interface ArticleRepository {
 
 	public int getArticlesCount(int id);
 
+	public int getArticleHitCount(int id);
+
 	
 	
 }

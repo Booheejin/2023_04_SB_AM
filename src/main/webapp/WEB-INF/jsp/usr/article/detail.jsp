@@ -3,6 +3,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>        
 <c:set var="pageTitle" value="Detail" />
 <%@ include file="../common/head.jsp" %>
+
+<script>
+	const params = {};
+	params.id = parseInt('${param.id}');
+	
+	function ArticleDetail_getArticlesCount() {
+		$.get('doIncreaseHitCount', {
+			id : params.id
+		}, function(data){
+			console.log(data.data1);
+			$('#articleDetail_getArticlesCount').empty().html(data.data1);
+		}, 'json')
+	}
+	
+	$(function(){
+		//실전코드
+// 		ArticleDetail_increaseHitCount();
+		
+		//테스트코드
+		setTimeout(ArticleDetail_getArticlesCount, 2000);
+	})
+	
+</script>
+
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
 			<div class="table-box-type-1">
@@ -26,7 +50,7 @@
 						</tr>
 						<tr>
 							<th>조회수</th>
-							<td>${article.count }</td>
+							<td><span class="badge" id="articleDetail_getArticlesCount">${article.count }</span></td>
 						</tr>
 						<tr>
 							<th>작성자</th>

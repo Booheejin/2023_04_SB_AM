@@ -16,6 +16,13 @@
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>
+	
+	<select id="getArticleHitCount" resultType="int">
+		SELECT count
+			FROM article
+			WHERE id = #{id}
+	</select>
+	
 	<select id="getForPrintArticle" resultType="Article">
 		SELECT A.*, M.name AS writerName 
 			FROM article AS A

@@ -108,12 +108,6 @@ public class UsrArticleController {
 		
 		Rq rq = (Rq)req.getAttribute("rq");
 		
-		ResultData<Integer> getArticlesCountRd = articleService.getArticlesCount(id);
-		
-		if (getArticlesCountRd.isFail()) {
-			return rq.jsReturnOnView(getArticlesCountRd.getMsg(), true);
-		}
-		
 		Article article = articleService.getForPrintArticle(id);
 
 		articleService.actorCanChangeData(rq.getLoginedMemberId(), article);
@@ -122,6 +116,26 @@ public class UsrArticleController {
 		
 		return "usr/article/detail";
 	}
+	
+	@RequestMapping("/usr/article/doIncreaseHitCount")
+	@ResponseBody
+	public ResultData<Integer> doIncreaseHitCount(Model model, HttpServletRequest req, int id) {
+		
+		Rq rq = (Rq)req.getAttribute("rq");
+		
+		ResultData<Integer> getArticlesCountRd = articleService.getArticlesCount(id);
+
+		if (getArticlesCountRd.isFail()) {
+			return getArticlesCountRd;
+		}
+		
+		ResultData<Integer> rd = ResultData.from(getArticlesCountRd.getResultCode(), getArticlesCountRd.getMsg(),"count", articleService.getArticleHitCount(id));
+		
+		rd.setData2("id",id);
+		
+		return rd;
+	}
+	
 	
 	@RequestMapping("/usr/article/delete")
 	@ResponseBody
