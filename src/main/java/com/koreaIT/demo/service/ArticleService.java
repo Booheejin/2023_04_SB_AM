@@ -80,21 +80,13 @@ public class ArticleService {
 		// TODO Auto-generated method stub
 		return articleRepository.getArticlesCnt(boardId,searchKeywordType,searchKeyword);
 	}
+
+	public void getArticlesCount(int id) {
+		articleRepository.getArticlesCount(id);
+		
+	}
 	
-	public ResultData<Integer> getArticlesCount(int id) {
-		
-		int affectedRowsCount = articleRepository.getArticlesCount(id);
-		
-		if(affectedRowsCount == 0) {
-			return ResultData.from("F-1", "해당 게시물은 존재하지 않습니다.","affectedRowsCount",affectedRowsCount);
-		}
-		
-		return ResultData.from("S-1", "조회수 증가", "affectedRowsCount", affectedRowsCount);
-	}
+	
 
-	public int getArticleHitCount(int id) {
-
-		return articleRepository.getArticleHitCount(id);
-	}
-
+	
 }

@@ -1,7 +1,9 @@
 package com.koreaIT.demo.controller;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,9 +106,36 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(Model model, HttpServletRequest req, int id) {
+	public String showDetail(Model model, HttpServletRequest req, HttpServletResponse resp, int id) {
 		
 		Rq rq = (Rq)req.getAttribute("rq");
+		
+		Cookie oldCookie = null;
+		Cookie[] cookies = req.getCookies();
+
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("count")) {
+					oldCookie = cookie;
+				}
+			}
+		}
+
+		if (oldCookie != null) {
+			if (!oldCookie.getValue().contains("[" + id + "]")) {
+				articleService.getArticlesCount(id);
+				oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(30 * 60);
+				resp.addCookie(oldCookie);
+			}
+		} else {
+			articleService.getArticlesCount(id);
+			Cookie newCookie = new Cookie("count", "[" + id + "]");
+			newCookie.setPath("/");
+			newCookie.setMaxAge(30 * 60);
+			resp.addCookie(newCookie);
+		}
 		
 		Article article = articleService.getForPrintArticle(id);
 
@@ -115,25 +144,6 @@ public class UsrArticleController {
 		model.addAttribute("article",article);
 		
 		return "usr/article/detail";
-	}
-	
-	@RequestMapping("/usr/article/doIncreaseHitCount")
-	@ResponseBody
-	public ResultData<Integer> doIncreaseHitCount(Model model, HttpServletRequest req, int id) {
-		
-		Rq rq = (Rq)req.getAttribute("rq");
-		
-		ResultData<Integer> getArticlesCountRd = articleService.getArticlesCount(id);
-
-		if (getArticlesCountRd.isFail()) {
-			return getArticlesCountRd;
-		}
-		
-		ResultData<Integer> rd = ResultData.from(getArticlesCountRd.getResultCode(), getArticlesCountRd.getMsg(),"count", articleService.getArticleHitCount(id));
-		
-		rd.setData2("id",id);
-		
-		return rd;
 	}
 	
 	

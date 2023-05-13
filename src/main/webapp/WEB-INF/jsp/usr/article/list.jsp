@@ -20,12 +20,20 @@
 				</div>
 			<div class="table-box-type-1">
 				<table class="table table-zebra w-full">
+						<colgroup>
+							<col width="60"/>
+							<col width="200"/>
+							<col />
+							<col width="120"/>
+							<col width="60"/>
+						</colgroup>
 					<thead>
 						<tr>
 							<th>번호</th>
 							<th>날짜</th>
 							<th>제목</th>
 							<th>작성자</th>
+							<th>조회수</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -35,6 +43,7 @@
 								<td>${article.regDate }</td>
 								<td><a class="btn-text-link"  href="detail?id=${article.id }">${article.title }</a></td>
 								<td>${article.writerName }</td>
+								<td>${article.count }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
