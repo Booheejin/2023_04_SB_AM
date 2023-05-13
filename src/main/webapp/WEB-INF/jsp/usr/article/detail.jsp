@@ -9,10 +9,19 @@
 	params.id = parseInt('${param.id}');
 	
 	function ArticleDetail_getArticlesCount() {
+		
+		const localStorageKey = 'article_[' + params.id + ']_alreadyView';
+		
+		if (localStorage.getItem(localStorageKey)) {
+			return;
+		}
+		
+		localStorage.setItem(localStorageKey, true);
+		
 		$.get('doIncreaseHitCount', {
 			id : params.id
 		}, function(data){
-			console.log(data.data1);
+			
 			$('#articleDetail_getArticlesCount').empty().html(data.data1);
 		}, 'json')
 	}
