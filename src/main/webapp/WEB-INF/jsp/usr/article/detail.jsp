@@ -97,4 +97,35 @@
 			</div>
 		</div>
 	</section>
+	
+	<script>
+		function replyWrite_submitForm(form) {
+			
+			form.body.value = form.body.value.trim();
+			
+			if (form.body.value.length < 2) {
+				alert('2글자 이상 입력해주세요');
+				form.body.focus();
+				return;
+			}
+			
+			form.submit();
+		}
+	</script>	
+	
+	<section class="mt-5 text-xl">
+		<div class="container mx-auto px-3">
+			<h2>댓글</h2>
+			<form action="../reply/doWrite" method="POST" onsubmit="replyWrite_submitForm(this); return false;">
+				<input type="hidden" name="relTypeCode" value="article" />
+				<input type="hidden" name="relId" value="${article.id }" />
+				<div class="mt-4 border border-gray-400 rounded-lg text-base p-4">
+					<div class="mb-2"><span>닉네임</span></div>
+					<textarea class="textarea textarea-bordered w-full" name="body" placeholder="내용을 입력해주세요"></textarea>
+					<div class="flex justify-end"><button class="btn-text-link btn btn-active btn-sm">등록</button></div>
+				</div>
+			</form>
+		</div>
+	</section>
+	
 <%@ include file="../common/foot.jsp" %>
