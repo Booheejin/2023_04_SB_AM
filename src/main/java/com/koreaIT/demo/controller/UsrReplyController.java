@@ -53,5 +53,37 @@ public class UsrReplyController {
 
 		return Util.jsReplace(Util.f("%d번 댓글을 삭제했습니다", id), Util.f("../article/detail?id=%d", reply.getRelId()));
 	}
+	
+	@RequestMapping("/usr/reply/doModify")
+	@ResponseBody
+	public String doModify(HttpServletRequest req,int id, String body) {
+
+		Rq rq = (Rq)req.getAttribute("rq");
+		Reply reply = replyService.getReply(id);
+
+		ResultData actorCanMDRd = replyService.actorCanMD(rq.getLoginedMemberId(), reply);
+
+		if (actorCanMDRd.isFail()) {
+			return Util.jsHistoryBack(actorCanMDRd.getMsg());
+		}
+
+		replyService.modifyReply(id, body);
+
+		return Util.jsReplace(Util.f("%d번 댓글을 수정했습니다", id), Util.f("../article/detail?id=%d", reply.getRelId()));
+	}
+
+	@RequestMapping("/usr/reply/getReplyContent")
+	@ResponseBody
+	public ResultData<Reply> getReplyContent(HttpServletRequest req,int id) {
+
+		Rq rq = (Rq)req.getAttribute("rq");
+		Reply reply = replyService.getForPrintReply(id);
+
+		if (reply == null) {
+			return ResultData.from("F-1", "해당 댓글은 존재하지 않습니다");
+		}
+
+		return ResultData.from("S-1", "댓글 정보 조회 성공", "reply", reply);
+	}
 
 }

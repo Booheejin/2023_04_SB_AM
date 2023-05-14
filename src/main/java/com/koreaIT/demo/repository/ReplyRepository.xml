@@ -37,7 +37,22 @@
 		DELETE FROM reply
 				WHERE id = #{id}
 	</delete>
-			
 	
+	<select id="getForPrintReply" resultType="Reply" >
+		SELECT R.*, M.nickname AS writerName
+				FROM reply AS R
+				INNER JOIN `member` AS M
+				ON R.memberId = M.id
+				WHERE R.id = #{id}
+	</select>
+	
+			
+	<update id="modifyReply">
+		UPDATE reply
+				SET updateDate = NOW(),
+					`body` = #{body}
+				WHERE id = #{id}
+	</update>
+				
 </mapper>
 

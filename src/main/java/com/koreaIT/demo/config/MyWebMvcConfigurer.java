@@ -41,6 +41,9 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/usr/reactionPoint/doInsertReactionPoint");
 		ir.addPathPatterns("/usr/reactionPoint/doDeleteReactionPoint");
 		ir.addPathPatterns("/usr/reply/dowrite");
+		ir.addPathPatterns("/usr/reply/dodelete");
+		ir.addPathPatterns("/usr/reply/domodify");
+		ir.addPathPatterns("/usr/reply/getreplyContent");
 		
 //		registry.addInterceptor(beforActionInetereceptor).addPathPatterns("/**").excludePathPatterns("/resource/**");
 //		
