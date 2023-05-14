@@ -41,12 +41,34 @@ public class UsrReactionPointController {
 	public String doInsertReactionPoint(HttpServletRequest req,int relId, String relTypeCode, int point) {
 		
 		Rq rq = (Rq)req.getAttribute("rq");
+		
+		ReactionPoint reactionPoint = reactionPointService.getReactionPoint(rq.getLoginedMemberId(), relId, relTypeCode);
+
+		if (reactionPoint.getSumReactionPoint() != 0) {
+			reactionPointService.doDeleteReactionPoint(rq.getLoginedMemberId(), relId, relTypeCode);
+		}
+		
 		reactionPointService.doInsertReactionPoint(rq.getLoginedMemberId(), relId, relTypeCode, point);
 
 		if (point == 1) {
 			return Util.jsReplace(Util.f("%d번 글에 좋아요", relId), Util.f("../article/detail?id=%d", relId));
 		} else {
 			return Util.jsReplace(Util.f("%d번 글에 싫어요", relId), Util.f("../article/detail?id=%d", relId));
+		}
+	}
+	
+	@RequestMapping("/usr/reactionPoint/doDeleteReactionPoint")
+	@ResponseBody
+	public String doDeleteReactionPoint(HttpServletRequest req,int relId, String relTypeCode, int point) {
+		
+		Rq rq = (Rq)req.getAttribute("rq");
+		
+		reactionPointService.doDeleteReactionPoint(rq.getLoginedMemberId(), relId, relTypeCode);
+
+		if (point == 1) {
+			return Util.jsReplace(Util.f("%d번 글에 좋아요 취소", relId), Util.f("../article/detail?id=%d", relId));
+		} else {
+			return Util.jsReplace(Util.f("%d번 글에 싫어요 취소", relId), Util.f("../article/detail?id=%d", relId));
 		}
 	}
 

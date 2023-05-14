@@ -20,5 +20,12 @@
 					relId = #{relId},
 					`point` = #{point}
 	</insert>
+	
+	<delete id="doDeleteReactionPoint">
+		DELETE FROM reactionPoint
+				WHERE memberId = #{loginedMemberId}
+				AND relTypeCode = #{relTypeCode}
+				AND relId = #{relId}
+	</delete>
 </mapper>
 
