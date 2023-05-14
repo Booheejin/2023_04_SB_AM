@@ -4,6 +4,25 @@
 <c:set var="pageTitle" value="Detail" />
 <%@ include file="../common/head.jsp" %>
 
+	<script>
+		function getReactionPoint(){
+			
+			$.get('../reactionPoint/getReactionPoint', {
+				relId : ${article.id},
+				relTypeCode : 'article'
+			}, function(data) {
+				
+				console.log(data);
+				
+			}, 'json');
+			
+		}
+		
+		$(function() {
+			getReactionPoint();
+		})
+	</script>
+	
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
 			<div class="table-box-type-1">
