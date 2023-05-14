@@ -34,5 +34,15 @@
 	<select id="getMemberByNameAndEmail" resultType="Member">	
 		SELECT * FROM `member` WHERE name = #{name} AND email = #{email}
 	</select>
+	
+	<update id="doModify">
+		UPDATE `member`
+				SET updateDate = NOW(),
+					nickname = #{nickname},
+					cellphoneNum = #{cellphoneNum},
+					email = #{email}
+				WHERE id = #{loginedMemberId}
+	</update>
+	
 </mapper>
 
