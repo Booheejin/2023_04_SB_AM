@@ -27,5 +27,17 @@
 	
 	</select>
 	
+	<select id="getReply" resultType="Reply">
+		SELECT *
+				FROM reply
+				WHERE id = #{id}
+	</select>
+	
+	<delete id="deleteReply">
+		DELETE FROM reply
+				WHERE id = #{id}
+	</delete>
+			
+	
 </mapper>
 
