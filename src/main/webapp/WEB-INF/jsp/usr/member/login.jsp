@@ -22,6 +22,7 @@
 							</tr>
 							<tr>
 								<td colspan="2"><button class="btn-text-link btn btn-active btn-ghost" >로그인</button></td>
+								
 							</tr>
 							
 						</tbody>

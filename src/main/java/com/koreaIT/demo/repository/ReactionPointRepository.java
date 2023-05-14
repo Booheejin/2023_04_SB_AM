@@ -16,4 +16,14 @@ public interface ReactionPointRepository {
 //			""")
 	ReactionPoint getReactionPoint(int loginedMemberId, int relId, String relTypeCode);
 
+//	@Insert("""
+//			INSERT INTO reactionPoint
+//				SET regDate = NOW(),
+//					updateDate = NOW(),
+//					memberId = #{loginedMemberId},
+//					relTypeCode = #{relTypeCode},
+//					relId = #{relId},
+//					`point` = #{point}
+//			""")
+	void doInsertReactionPoint(int loginedMemberId, int relId, String relTypeCode, int point);
 }

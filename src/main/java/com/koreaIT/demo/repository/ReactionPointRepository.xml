@@ -11,5 +11,14 @@
 				AND relTypeCode = #{relTypeCode}
 	</select>
 	
+	<insert id="doInsertReactionPoint">
+		INSERT INTO reactionPoint
+				SET regDate = NOW(),
+					updateDate = NOW(),
+					memberId = #{loginedMemberId},
+					relTypeCode = #{relTypeCode},
+					relId = #{relId},
+					`point` = #{point}
+	</insert>
 </mapper>
 
