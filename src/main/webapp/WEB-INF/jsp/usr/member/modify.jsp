@@ -40,7 +40,7 @@
 					</table>
 				</div>
 				<div class="btns mt-2 flex justify-between">
-					<button class="btn-text-link btn btn-active btn-ghost" tn-ghost type="button" onclick="history.back();">뒤로가기</button>
+					<button class="btn-text-link btn btn-active btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
 					<div>
 						<a class="btn-text-link btn btn-active btn-ghost mr-2" href="passwordModify">비밀번호 변경</a>
 						<button class="btn-text-link btn btn-active btn-ghost">수정</button>
