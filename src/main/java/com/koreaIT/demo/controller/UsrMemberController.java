@@ -14,21 +14,23 @@ import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
 
+
 @Controller
 public class UsrMemberController {
 	
 private MemberService memberService;
+private Rq rq;
 	
 	@Autowired
-	public UsrMemberController(MemberService memberService) {
+	public UsrMemberController(MemberService memberService, Rq rq) {
 		this.memberService = memberService;
+		this.rq = rq;
 	}
 	
 	@RequestMapping("/usr/member/dojoin")
 	@ResponseBody
-	public ResultData<Member> doJoin(HttpServletRequest req ,String loginId, String loginPw,String name,String nickname,String cellphoneNum,String email) {
+	public ResultData<Member> doJoin(String loginId, String loginPw,String name,String nickname,String cellphoneNum,String email) {
 		
-		Rq rq = (Rq) req.getAttribute("rq");
 		
 		if (rq.getLoginedMemberId() != 0) {
 			return ResultData.from("F-A","이미 로그인 되어있습니다.");
@@ -76,9 +78,8 @@ private MemberService memberService;
 	
 	@RequestMapping("/usr/member/dologin")
 	@ResponseBody
-	public String doLogin (HttpServletRequest req, String loginId , String loginPw) {
+	public String doLogin ( String loginId , String loginPw) {
 		
-		Rq rq = (Rq) req.getAttribute("rq");
 		
 		if (rq.getLoginedMemberId() != 0) {
 			return Util.jsHistoryBack("이미 로그인 되어있습니다.");
@@ -132,9 +133,8 @@ private MemberService memberService;
 	}
 
 	@RequestMapping("/usr/member/doCheckPassword")
-	public String doCheckPassword(HttpServletRequest req,String loginPw) {
+	public String doCheckPassword(String loginPw) {
 		
-		Rq rq = (Rq) req.getAttribute("rq");
 		if (Util.empty(loginPw)) {
 			return rq.jsReturnOnView("비밀번호를 입력해주세요", true);
 		}
@@ -148,9 +148,8 @@ private MemberService memberService;
 
 	@RequestMapping("/usr/member/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req,String nickname, String cellphoneNum, String email) {
+	public String doModify(String nickname, String cellphoneNum, String email) {
 		
-		Rq rq = (Rq) req.getAttribute("rq");
 		if (Util.empty(nickname)) {
 			return Util.jsHistoryBack("닉네임을 입력해주세요");
 		}
@@ -175,10 +174,8 @@ private MemberService memberService;
 
 	@RequestMapping("/usr/member/doPasswordModify")
 	@ResponseBody
-	public String doPasswordModify(HttpServletRequest req,String loginPw, String loginPwChk) {
+	public String doPasswordModify(String loginPw, String loginPwChk) {
 		
-		
-		Rq rq = (Rq) req.getAttribute("rq");
 		if (Util.empty(loginPw)) {
 			return Util.jsHistoryBack("새 비밀번호를 입력해주세요");
 		}

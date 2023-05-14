@@ -17,19 +17,18 @@ import com.koreaIT.demo.vo.Rq;
 public class UsrReplyController {
 
 	private ReplyService replyService;
+	private Rq rq;
 
 
 	@Autowired
-	public UsrReplyController(ReplyService replyService) {
+	public UsrReplyController(ReplyService replyService,Rq rq) {
 		this.replyService = replyService;
-		
+		this.rq = rq;
 	}
 
 	@RequestMapping("/usr/reply/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req,String relTypeCode, int relId, String body) {
-
-		Rq rq = (Rq)req.getAttribute("rq");
+	public String doWrite(String relTypeCode, int relId, String body) {
 		
 		ResultData<Integer> replyWriteRd = replyService.writeReply(rq.getLoginedMemberId(), relTypeCode, relId, body);
 
@@ -38,9 +37,8 @@ public class UsrReplyController {
 
 	@RequestMapping("/usr/reply/doDelete")
 	@ResponseBody
-	public String doDelete(HttpServletRequest req,int id) {
+	public String doDelete(int id) {
 
-		Rq rq = (Rq)req.getAttribute("rq");
 		Reply reply = replyService.getReply(id);
 
 		ResultData actorCanMDRd = replyService.actorCanMD(rq.getLoginedMemberId(), reply);
@@ -56,9 +54,9 @@ public class UsrReplyController {
 	
 	@RequestMapping("/usr/reply/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req,int id, String body) {
+	public String doModify(int id, String body) {
 
-		Rq rq = (Rq)req.getAttribute("rq");
+		
 		Reply reply = replyService.getReply(id);
 
 		ResultData actorCanMDRd = replyService.actorCanMD(rq.getLoginedMemberId(), reply);
@@ -74,9 +72,8 @@ public class UsrReplyController {
 
 	@RequestMapping("/usr/reply/getReplyContent")
 	@ResponseBody
-	public ResultData<Reply> getReplyContent(HttpServletRequest req,int id) {
+	public ResultData<Reply> getReplyContent(int id) {
 
-		Rq rq = (Rq)req.getAttribute("rq");
 		Reply reply = replyService.getForPrintReply(id);
 
 		if (reply == null) {

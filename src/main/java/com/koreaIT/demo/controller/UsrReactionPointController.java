@@ -17,19 +17,17 @@ import com.koreaIT.demo.vo.Rq;
 public class UsrReactionPointController {
 
 	private ReactionPointService reactionPointService;
-	
+	private Rq rq;
 
 	@Autowired
-	public UsrReactionPointController(ReactionPointService reactionPointService) {
+	public UsrReactionPointController(ReactionPointService reactionPointService,Rq rq) {
 		this.reactionPointService = reactionPointService;
-		
+		this.rq = rq;
 	}
 
 	@RequestMapping("/usr/reactionPoint/getReactionPoint")
 	@ResponseBody
-	public ResultData<ReactionPoint> getReactionPoint(HttpServletRequest req, int relId, String relTypeCode) {
-		
-		Rq rq = (Rq)req.getAttribute("rq");
+	public ResultData<ReactionPoint> getReactionPoint( int relId, String relTypeCode) {
 		
 		ReactionPoint reactionPoint = reactionPointService.getReactionPoint(rq.getLoginedMemberId(), relId, relTypeCode);
 
@@ -38,9 +36,7 @@ public class UsrReactionPointController {
 	
 	@RequestMapping("/usr/reactionPoint/doInsertReactionPoint")
 	@ResponseBody
-	public String doInsertReactionPoint(HttpServletRequest req,int relId, String relTypeCode, int point) {
-		
-		Rq rq = (Rq)req.getAttribute("rq");
+	public String doInsertReactionPoint(int relId, String relTypeCode, int point) {
 		
 		ReactionPoint reactionPoint = reactionPointService.getReactionPoint(rq.getLoginedMemberId(), relId, relTypeCode);
 
@@ -59,9 +55,7 @@ public class UsrReactionPointController {
 	
 	@RequestMapping("/usr/reactionPoint/doDeleteReactionPoint")
 	@ResponseBody
-	public String doDeleteReactionPoint(HttpServletRequest req,int relId, String relTypeCode, int point) {
-		
-		Rq rq = (Rq)req.getAttribute("rq");
+	public String doDeleteReactionPoint(int relId, String relTypeCode, int point) {
 		
 		reactionPointService.doDeleteReactionPoint(rq.getLoginedMemberId(), relId, relTypeCode);
 

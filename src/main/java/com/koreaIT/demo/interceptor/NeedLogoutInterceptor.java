@@ -10,23 +10,25 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.koreaIT.demo.vo.Rq;
 
 @Component
-public class BeforeActionInterceptor implements HandlerInterceptor{
-	
+public class NeedLogoutInterceptor implements HandlerInterceptor {
+
 	private Rq rq;
 
 	@Autowired
-	public BeforeActionInterceptor(Rq rq) {
+	public NeedLogoutInterceptor(Rq rq) {
 		this.rq = rq;
 	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
-		rq.initRq();
-		
+
+		if (rq.getLoginedMemberId() != 0) {
+			rq.jsPrintHistoryBack("로그아웃 후 이용해주세요");
+			return false;
+		}
+
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
-	
-	
+
 }

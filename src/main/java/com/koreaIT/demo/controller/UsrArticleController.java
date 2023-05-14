@@ -28,12 +28,14 @@ public class UsrArticleController {
 	private ArticleService articleService;
 	private BoardService boardService;
 	private ReplyService replyService;
+	private Rq rq;
 	
 	@Autowired
-	public UsrArticleController(ArticleService articleService, BoardService boardService,ReplyService replyService) {
+	public UsrArticleController(ArticleService articleService, BoardService boardService,ReplyService replyService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
 		this.replyService = replyService;
+		this.rq = rq;
 	}
 	
 //	액션 메서드
@@ -43,9 +45,8 @@ public class UsrArticleController {
 	}
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, int boardId,String title,String body) {
+	public String doWrite(int boardId,String title,String body) {
 		
-		Rq rq = (Rq)req.getAttribute("rq");
 
 //		if (rq.getLoginedMemberId() == 0) {
 //			return ResultData.from("F-A", "로그인 후 이용해주세요");
@@ -72,11 +73,10 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpServletRequest req,Model model,  @RequestParam(defaultValue = "1") int boardId,
+	public String showList(Model model,  @RequestParam(defaultValue = "1") int boardId,
 			@RequestParam(defaultValue = "1") int page ,@RequestParam(defaultValue = "제목") String searchKeyword ,
 			@RequestParam(defaultValue = "")String searchKeywordType) {
 
-		Rq rq = (Rq) req.getAttribute("rq");
 		
 		if (page <= 0) {
 			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다", true);
@@ -112,7 +112,6 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(Model model, HttpServletRequest req, HttpServletResponse resp, int id) {
 		
-		Rq rq = (Rq)req.getAttribute("rq");
 		
 		Cookie oldCookie = null;
 		Cookie[] cookies = req.getCookies();
@@ -156,9 +155,7 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/delete")
 	@ResponseBody
-	public String doDelete(HttpServletRequest req,int id) {
-		
-		Rq rq = (Rq)req.getAttribute("rq");
+	public String doDelete(int id) {
 		
 		
 		Article article = articleService.getArticleById(id);
@@ -176,9 +173,7 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/modify")
-	public String modify(HttpServletRequest req, Model model, int id) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String modify(Model model, int id) {
 
 		Article article = articleService.getForPrintArticle(id);
 
@@ -196,10 +191,8 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/domodify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body) {
+	public String doModify( int id, String title, String body) {
 		
-		Rq rq = (Rq) req.getAttribute("rq");
-
 		
 		Article article = articleService.getArticleById(id);
 		
