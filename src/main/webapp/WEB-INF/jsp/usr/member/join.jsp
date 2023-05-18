@@ -110,7 +110,7 @@
 
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
-			<form action="doJoin" method="POST" onsubmit="join_submitForm(this); return false;">
+			<form action="dojoin" method="POST" onsubmit="join_submitForm(this); return false;">
 				<div class="table-box-type-1">
 					<table>
 						<colgroup>
