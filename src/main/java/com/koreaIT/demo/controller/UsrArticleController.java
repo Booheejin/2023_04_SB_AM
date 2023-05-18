@@ -191,7 +191,7 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/domodify")
 	@ResponseBody
-	public String doModify( int id, String title, String body) {
+	public String doModify(int id, String title, String body) {
 		
 		
 		Article article = articleService.getArticleById(id);

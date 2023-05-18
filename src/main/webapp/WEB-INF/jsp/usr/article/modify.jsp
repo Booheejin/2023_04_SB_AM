@@ -3,12 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="Modify" />
 <%@ include file="../common/head.jsp" %>
+<%@ include file="../common/toastUiEditorLib.jsp" %>
 	<section class="mt-8 text-xl">
 		<div class="container mx-auto px-3">
-			<form action="domodify" method="POST">
+			<form action="domodify" method="POST" onsubmit="submitForm(this); return false;">
+				<input type="hidden" name="body" />
 				<input type="hidden" name="id" value="${article.id }"/>
 				<div class="table-box-type-1">
-					<table  class="table table-zebra w-full">
+					<table class="table table-zebra w-full">
 						<colgroup>
 							<col width="200" />
 						</colgroup>
@@ -31,11 +33,15 @@
 							</tr>
 							<tr>
 								<th>제목</th>
-								<td><input  type="text" placeholder="Type here" class="input input-bordered input-accent w-full max-w-xs" name="title" value="${article.title }" placeholder="제목을 입력해주세요"/></td>
+								<td><input class="input input-bordered w-full" type="text" name="title" value="${article.title }" placeholder="제목을 입력해주세요"/></td>
 							</tr>
 							<tr>
 								<th>내용</th>
-								<td><textarea name="body"  class="textarea textarea-accent" placeholder="Bio" placeholder="내용을 입력해주세요">${article.body }</textarea></td>
+								<td>
+									<div class="toast-ui-editor">
+      									<script type="text/x-template">${article.body }</script>
+    								</div>
+								</td>
 							</tr>
 							<tr>
 								<td colspan="2" ><button class="btn-text-link btn btn-active btn-ghost" >수정</button></td>
